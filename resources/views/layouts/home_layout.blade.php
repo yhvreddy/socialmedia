@@ -18,6 +18,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/lib/slick/slick-theme.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/responsive.css')}}">
+	<script type="text/javascript" src="{{ asset('public/js/jquery.min.js') }}"></script>
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 	<style>
@@ -34,6 +36,27 @@
 			top: 58% !important;
 		}
 	</style>
+	<script>
+		//$(document).ready(function(){
+			function sendrequest(request_id,sender_id){
+				$.ajax({
+					type: "GET",
+					url: "sendrequest/"+sender_id+"/"+request_id+"/send",
+					dataType: "json",
+					success: function (data) {
+						if(data.responsive != 0){
+							$("#send_"+request_id).removeClass('la-plus');
+							$("#send_"+request_id).addClass('la-check');
+							setTimeout(function(){ $("#request_"+request_id).hide(); }, 1000);
+						}else{
+							$("#send_"+request_id).removeClass('la-plus');
+							$("#send_"+request_id).addClass('la-plus');
+						}
+					}
+				});
+			}
+		//});
+	</script>
 </head>
 
 <body oncontextmenu="return true;">
@@ -54,119 +77,24 @@
 					<nav>
 						<ul>
 							<li>
-								<a href="#" title="">
+								<a href="{{url('home')}}">
 									<span><img src="{{asset('public/images/icon1.png')}}" alt=""></span>
 									Home
 								</a>
 							</li>
 							<li>
-								<a href="companies.html" title="">
+								<a href="{{url('friends')}}">
 									<span><img src="{{asset('public/images/icon4.png')}}" alt=""></span>
 									Friends
 								</a>
 							</li>
 
 							<li>
-								<a href="#" title="" class="not-box-openm">
+								<a href="{{url('messages')}}">
 									<span><img src="{{asset('public/images/icon6.png')}}" alt=""></span>
 									Messages
 								</a>
-								<div class="notification-box msg" id="message">
-									<div class="nt-title">
-										<h4>Setting</h4>
-										<a href="#" title="">Clear all</a>
-									</div>
-									<div class="nott-list">
-										<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img1.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a> </h3>
-							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
-							  					<p>Lorem ipsum dolor sit amet.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img3.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="messages.html" title="">Jassica William</a></h3>
-							  					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut labore et dolore magna aliqua.</p>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="view-all-nots">
-						  					<a href="messages.html" title="">View All Messsages</a>
-						  				</div>
-									</div><!--nott-list end-->
-								</div><!--notification-box end-->
                             </li>
-
-							<li>
-								<a href="#" title="" class="not-box-open">
-									<span><img src="{{asset('public/images/icon7.png')}}" alt=""></span>
-									Notification
-								</a>
-								<div class="notification-box noti" id="notification">
-									<div class="nt-title">
-										<h4>Setting</h4>
-										<a href="#" title="">Clear all</a>
-									</div>
-									<div class="nott-list">
-										<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img1.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img3.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="notfication-details">
-							  				<div class="noty-user-img">
-							  					<img src="images/resources/ny-img2.png" alt="">
-							  				</div>
-							  				<div class="notification-info">
-							  					<h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-							  					<span>2 min ago</span>
-							  				</div><!--notification-info -->
-						  				</div>
-						  				<div class="view-all-nots">
-						  					<a href="#" title="">View All Notification</a>
-						  				</div>
-									</div><!--nott-list end-->
-								</div><!--notification-box end-->
-							</li>
 						</ul>
 					</nav><!--nav end-->
 					<div class="menu-btn">
@@ -231,9 +159,6 @@
 
 	</div><!--theme-layout end-->
 
-
-
-    <script type="text/javascript" src="{{ asset('public/js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('public/js/popper.js') }}"></script>
     <script type="text/javascript" src="{{ asset('public/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('public/js/jquery.mCustomScrollbar.js') }}"></script>
@@ -249,7 +174,7 @@
                 }
             });
 
-            var _token = $('meta[name="csrf-token"]').attr('content');
+            
 
             //load_data('',_token);
 
@@ -266,9 +191,6 @@
                 })
             }*/
 
-
-            var lastpost = '';
-
             $('#SubmitPost').on('submit', function(event){
                 event.preventDefault();
                 $.ajax({
@@ -281,12 +203,12 @@
                     processData: false,
                     success:function(data)
                     {
-                        console.log(data);
+                        console.log(data.message);
                         if(data.responsive != 0)
                         {
-                           $('#SubmitPost').trigger("reset");
-                           $('#job_post').removeClass("active");
-                           $('.wrapper').removeClass('overlay');
+                           	$('#SubmitPost').trigger("reset");
+                           	$('#job_post').removeClass("active");
+                           	$('.wrapper').removeClass('overlay');
                         }else{
                             $('#SubmitPost').trigger("reset");
                             $('#job_post').removeClass("active");

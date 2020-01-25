@@ -18,14 +18,19 @@ class HomeController extends defaultController
 
     public function index()
     {
+        $suggestfriends = $this->home->suggestfrends();
         $postdata = $this->home->selectData();
-        return view('home',compact('postdata'));
+        $friendrequestsent = $this->home->usersrequest();
+        $requests = [];
+        foreach($friendrequestsent as $values)
+        {
+            $requests[] = $values->to_id;
+        }
+        return view('home',compact('postdata','suggestfriends','requests'));
     }
 
-    public function uploadPostData(Request $request){
-
-        //dd($request);
-
+    public function uploadPostData(Request $request)
+    {
         if($request->hasFile('select_file'))
         {
             $image = $request->file('select_file');
@@ -40,10 +45,40 @@ class HomeController extends defaultController
         $insert = $this->home->uploadpostData($data);
         if($insert != 0){
             $lastdata = $this->home->selectLastData($insert);
-            $dataresponce = response()->json(['responsive'=>$insert,'message'=>'Post as successfully posted..!','data'=>$lastdata]);
+            $dataresponce = response()->json(['responsive'=>$insert,'message'=>'Post as successfully posted..!','lastdata'=>$lastdata]);
         }else{
-            $dataresponce = response()->json(['responsive'=>$insert,'message'=>'Post as failed to posted..!','data'=>'']);
+            $dataresponce = response()->json(['responsive'=>$insert,'message'=>'Post as failed to posted..!','lastdata'=>'']);
         }
         return $dataresponce;
     }
+
+    public function sendRequest(Request $request)
+    {
+        $data = array('from_id'=>$request->sender_id,'to_id'=> $request->request_id,'confirm'=>1);
+        $insert = $this->home->sendRequestsave($data);
+        if($insert != 0){
+            $dataresponce = response()->json(['responsive'=>$insert,'message'=>'Post as successfully posted..!']);
+        }else{
+            $dataresponce = response()->json(['responsive'=>$insert,'message'=>'Post as failed to posted..!']);
+        }
+        return $dataresponce;
+    }
+
+    public function friendsList()
+    {
+        $friendrequestsent = $this->home->usersrequest();
+        $suggestfriends = $this->home->suggestfrends();
+        $requests = [];
+        foreach($friendrequestsent as $values)
+        {
+            $requests[] = $values->to_id;
+        }
+        return view('friends',compact('suggestfriends','requests'));
+    }
+
+    public function messagesList()
+    {
+        return view('messages');
+    }
+
 }

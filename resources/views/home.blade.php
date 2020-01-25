@@ -25,65 +25,37 @@
                         </div><!--user-profile end-->
 
                     </div><!--user-data end-->
-                    <div class="suggestions full-width">
-                        <div class="sd-title">
-                            <h3>Suggest Friends</h3>
-                            <i class="la la-ellipsis-v"></i>
-                        </div><!--sd-title end-->
-                        <div class="suggestions-list">
-                            <div class="suggestion-usd">
-                                <img src="images/resources/s1.png" alt="">
-                                <div class="sgt-text">
-                                    <h4>Jessica William</h4>
-                                    <span>Graphic Designer</span>
+
+                    @if(count($suggestfriends) != 0)
+                        <div class="suggestions full-width">
+                            <div class="sd-title">
+                                <h3>Suggest Friends</h3>
+                                <i class="la la-ellipsis-v"></i>
+                            </div><!--sd-title end-->
+                            <div class="suggestions-list">
+                                @foreach($suggestfriends as $key => $suggestfriend)
+                                    @if(!in_array($suggestfriend->id,$requests))
+                                        <div class="suggestion-usd" id="request_{{$suggestfriend->id}}">
+                                            @if($suggestfriend->image != '')
+                                                <img src="{{asset($suggestfriend->image)}}" alt="" style="max-width: 15%;">
+                                            @else
+                                                <img src="{{asset('public/images/avatar.jpg')}}" alt="" style="max-width: 15%;">
+                                            @endif
+                                            <div class="sgt-text">
+                                                <h4>{{$suggestfriend->name}}</h4>
+                                                <span>{{$suggestfriend->email}}</span>
+                                            </div>
+                                            <span onclick="sendrequest('{{$suggestfriend->id}}','{{Auth::user()->id}}')"><i class="la la-plus" id="send_{{$suggestfriend->id}}"></i></span>
+                                        </div>
+                                    @endif
+                                @endforeach
+                                <div class="view-more">
+                                    <a href="{{url('friends')}}" title="">View More</a>
                                 </div>
-                                <span><i class="la la-plus"></i></span>
-                            </div>
-                            <div class="suggestion-usd">
-                                <img src="images/resources/s2.png" alt="">
-                                <div class="sgt-text">
-                                    <h4>John Doe</h4>
-                                    <span>PHP Developer</span>
-                                </div>
-                                <span><i class="la la-plus"></i></span>
-                            </div>
-                            <div class="suggestion-usd">
-                                <img src="images/resources/s3.png" alt="">
-                                <div class="sgt-text">
-                                    <h4>Poonam</h4>
-                                    <span>Wordpress Developer</span>
-                                </div>
-                                <span><i class="la la-plus"></i></span>
-                            </div>
-                            <div class="suggestion-usd">
-                                <img src="images/resources/s4.png" alt="">
-                                <div class="sgt-text">
-                                    <h4>Bill Gates</h4>
-                                    <span>C & C++ Developer</span>
-                                </div>
-                                <span><i class="la la-plus"></i></span>
-                            </div>
-                            <div class="suggestion-usd">
-                                <img src="images/resources/s5.png" alt="">
-                                <div class="sgt-text">
-                                    <h4>Jessica William</h4>
-                                    <span>Graphic Designer</span>
-                                </div>
-                                <span><i class="la la-plus"></i></span>
-                            </div>
-                            <div class="suggestion-usd">
-                                <img src="images/resources/s6.png" alt="">
-                                <div class="sgt-text">
-                                    <h4>John Doe</h4>
-                                    <span>PHP Developer</span>
-                                </div>
-                                <span><i class="la la-plus"></i></span>
-                            </div>
-                            <div class="view-more">
-                                <a href="#" title="">View More</a>
-                            </div>
-                        </div><!--suggestions-list end-->
-                    </div><!--suggestions end-->
+                            </div><!--suggestions-list end-->
+                        </div><!--suggestions end-->
+                    @endif
+
                     <div class="tags-sec full-width">
                         <div class="cp-sec">
                             <img src="{{asset('public/images/logo2.png')}}" alt="">
@@ -117,11 +89,8 @@
                     @if(Session()->has('failed'))
                         <div class="alert alert-warning">{{Session('failed')}}</div>
                     @endif
-                    <div class="posts-section">
+                    <div class="posts-section" id="AppendLoadPosts">
 
-                        <div id="AppendLastPost"></div>
-
-                        <div id="AppendLoadPosts"></div>
 
                         @if(count($postdata) > 0)
                             @foreach($postdata as $value)
@@ -134,17 +103,10 @@
                                                 <img src="{{asset('public/images/avatar.jpg')}}" style="max-width: 15%;" alt="">
                                             @endif
                                             <div class="usy-name">
-                                                <h3>John Doe</h3>
+                                                <h3>{{Auth::user()->name}}</h3>
                                                 <span><img src="{{asset('public/images/clock.png')}}" alt=""> {{daysago(date('Y-m-d',strtotime($value->created_at)))}} </span>
                                             </div>
                                         </div>
-                                        <!--<div class="ed-opts">
-                                            <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-                                            <ul class="ed-options">
-                                                <li><a href="#" title="">Edit Post</a></li>
-                                                <li><a href="#" title="">Delete</a></li>
-                                            </ul>
-                                        </div>-->
                                     </div>
                                     <div class="job_descp">
                                         @if(!empty($value->image))
@@ -164,21 +126,10 @@
                                         <a href="#"><i class="fas fa-eye"></i>Views 50</a>
                                     </div>
                                 </div>
-                        @endforeach
-                    @endif
+                            @endforeach
+                        @endif
 
-                        <!--post-bar-->
 
-                        <!--post-bar end-->
-
-                        <!-- <div class="process-comm">
-                            <div class="spinner">
-                                <div class="bounce1"></div>
-                                <div class="bounce2"></div>
-                                <div class="bounce3"></div>
-                            </div>
-                        </div> -->
-                        <!--process-comm end-->
                     </div><!--posts-section end-->
                 </div><!--main-ws-sec end-->
             </div>
